@@ -6,6 +6,12 @@
 
 using namespace std;
 
+struct MPC_OUTPUT {
+  vector<double> vars;
+  vector<double> xpts;
+  vector<double> ypts;
+};
+
 class MPC {
  public:
   MPC();
@@ -14,7 +20,7 @@ class MPC {
 
   // Solve the model given an initial state and polynomial coefficients.
   // Return the first actuatotions.
-  vector<double> Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs);
+  MPC_OUTPUT Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs);
 };
 
 #endif /* MPC_H */
