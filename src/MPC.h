@@ -6,6 +6,7 @@
 
 using namespace std;
 
+// Output struct to store and pass the output of the solver
 struct MPC_OUTPUT {
   vector<double> vars;
   vector<double> xpts;
