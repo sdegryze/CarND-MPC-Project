@@ -94,6 +94,19 @@ int main() {
           double py = j[1]["y"];
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
+          double delta = j[1]["steering_angle"];
+          delta *= -deg2rad(25);
+          double a = j[1]["throttle"];
+          
+          const double latency = 0.1;
+          const double Lf = 2.67;
+          
+          // dealing with latency: assume that the car is in fact 100 ms further than what was transmitted from
+          // the simulator
+          psi += v * delta / Lf * latency; // update psi first, since psi is used to update px and py
+          px += v * cos(psi) * latency;
+          py += v * sin(psi) * latency;
+          v += a * latency;
           
           vector<double> ptsx_car;
           vector<double> ptsy_car;
@@ -120,6 +133,9 @@ int main() {
           
           // Note that because we are working in car coordinates, x = y = psi = 0.
           Eigen::VectorXd state(6);
+          
+          // transform points to their position 100 ms from now (incorporate latency)
+
           state << 0, 0, 0, v, cte, epsi;
           
           auto mpc_output = mpc.Solve(state, coeffs);
