@@ -6,10 +6,10 @@
 using CppAD::AD;
 
 // Set the number of time points of the reference horizon and the duration of 1 timepoint
-size_t N = 40;
+size_t N = 30;
 double dt = 0.025;
 // Set the reference speed
-double ref_v = 70;
+double ref_v = 75;
 
 
 // This value assumes the model presented in the classroom is used.
@@ -68,13 +68,13 @@ class FG_eval {
     
     // Note that there are only N-1 actuators, since the state at t=0 is the given (current) state.
     for (int t = 0; t < N - 1; t++) {
-      fg[0] += 70000 * CppAD::pow(vars[delta_start + t], 2);
-      fg[0] += 10 * CppAD::pow(vars[a_start + t], 2);
+      fg[0] += 35000 * CppAD::pow(vars[delta_start + t], 2);
+      fg[0] += 0 * CppAD::pow(vars[a_start + t], 2);
     }
     
     // Finally, penalize abrupt changes in actuation
     for (int t = 0; t < N - 2; t++) {
-      fg[0] += 10000 * CppAD::pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
+      fg[0] += 5000 * CppAD::pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
       fg[0] += 10 * CppAD::pow(vars[a_start + t + 1] - vars[a_start + t], 2);
     }
     
